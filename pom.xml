@@ -29,7 +29,7 @@
         <relativePath/>
     </parent>
     <artifactId>helloworld</artifactId>
-    <version>8.0.0.Beta-redhat-00004</version>
+    <version>8.0.0.Beta</version>
     <packaging>war</packaging>
     <name>Quickstart: helloworld</name>
     <description>Helloworld</description>
@@ -45,7 +45,6 @@
     <properties>
         <!-- The versions for BOMs, Dependencies and Plugins -->
         <version.server.bom>8.0.0.Beta-redhat-00004</version.server.bom>
-        <version.eap.maven.plugin>1.0.0.Beta6-redhat-dev</version.eap.maven.plugin>
     </properties>
 
     <repositories>
@@ -231,7 +230,6 @@
     </dependencies>
 
     <profiles>
-
         <profile>
             <id>arq-remote</id>
             <build>
