@@ -256,6 +256,9 @@
                                     <location>org.jboss.eap:eap-datasources-galleon-pack</location>
                                 </feature-pack>
                             </feature-packs>
+                            <layers>
+                                <layer>cloud-server</layer>
+                            </layers>
                             <filename>ROOT.war</filename>
                         </configuration>
                         <executions>
