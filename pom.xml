@@ -45,6 +45,12 @@
     <properties>
         <!-- The versions for BOMs, Dependencies and Plugins -->
         <version.server.bom>8.0.0.GA-redhat-00009</version.server.bom>
+        <maven.repository.protocol>https</maven.repository.protocol>
+        <!-- The full remote maven repo URL; can be overridden via -D for special use cases -->
+        <maven.repository.url>
+            ${maven.repository.protocol}://repository.jboss.org/nexus/content/groups/public/</maven.repository.url>
+        <!-- https://access.redhat.com/maven-repository -->
+        <maven.redhat.repository.url>${maven.repository.protocol}://maven.repository.redhat.com/ga/</maven.redhat.repository.url>
     </properties>
 
     <repositories>
