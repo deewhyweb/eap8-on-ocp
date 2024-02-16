@@ -44,7 +44,7 @@
 
     <properties>
         <!-- The versions for BOMs, Dependencies and Plugins -->
-        <version.server.bom>8.0.0.Beta-redhat-00004</version.server.bom>
+        <version.server.bom>8.0.0.GA-redhat-00009</version.server.bom>
     </properties>
 
     <repositories>
@@ -237,12 +237,14 @@
                     <plugin>
                         <groupId>org.jboss.eap.plugins</groupId>
                         <artifactId>eap-maven-plugin</artifactId>
-                        <version>1.0.0.Beta6-redhat-00001</version>
+                        <version>1.0.0.Final-redhat-00014</version>
                         <configuration>
                             <channels>
                                 <channel>
-                                    <groupId>org.jboss.eap.channels</groupId>
-                                    <artifactId>eap-8.0-beta</artifactId>
+                                    <manifest>
+                                      <groupId>org.jboss.eap.channels</groupId>
+                                      <artifactId>eap-8.0</artifactId>
+                                    </manifest>
                                 </channel>
                             </channels>
                             <feature-packs>
