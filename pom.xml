@@ -29,7 +29,7 @@
         <relativePath/>
     </parent>
     <artifactId>helloworld</artifactId>
-    <version>8.0.0.Beta-redhat-00004</version>
+    <version>8.0.0.Beta</version>
     <packaging>war</packaging>
     <name>Quickstart: helloworld</name>
     <description>Helloworld</description>
@@ -44,30 +44,17 @@
 
     <properties>
         <!-- The versions for BOMs, Dependencies and Plugins -->
-        <version.server.bom>8.0.0.Beta-redhat-00004</version.server.bom>
-        <version.eap.maven.plugin>1.0.0.Beta6-redhat-dev</version.eap.maven.plugin>
+        <version.server.bom>8.0.0.GA-redhat-00009</version.server.bom>
+        <maven.repository.protocol>https</maven.repository.protocol>
+        <!-- The full remote maven repo URL; can be overridden via -D for special use cases -->
+        <maven.repository.url>
+            ${maven.repository.protocol}://repository.jboss.org/nexus/content/groups/public/</maven.repository.url>
+        <!-- https://access.redhat.com/maven-repository -->
+        <maven.redhat.repository.url>${maven.repository.protocol}://maven.repository.redhat.com/ga/</maven.redhat.repository.url>
     </properties>
 
     <repositories>
-        <!-- keep this repository the first -->
         <repository>
-            <id>jboss-eap-product-repository</id>
-            <name>JBoss EAP Product Repository</name>
-            <url>https://download.devel.redhat.com/brewroot/repos/jb-eap-8.0-maven-build/latest/maven/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>jboss-public-maven-repository</id>
-            <name>JBoss Public Maven Repository</name>
-            <url>https://indy.psi.redhat.com/api/content/maven/group/builds-untested+shared-imports</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -76,12 +63,12 @@
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </snapshots>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>${maven.repository.url}</url>
             <layout>default</layout>
         </repository>
         <repository>
-            <id>redhat-ga-maven-repository</id>
-            <name>Red Hat GA Maven Repository</name>
-            <url>https://maven.repository.redhat.com/ga/</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -90,9 +77,12 @@
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </snapshots>
+            <id>jboss-enterprise-maven-repository</id>
+            <name>JBoss Enterprise Maven Repository</name>
+            <url>${maven.redhat.repository.url}</url>
             <layout>default</layout>
         </repository>
-        <repository>
+                <repository>
             <id>redhat-ea-maven-repository</id>
             <name>Red Hat Early Access Maven Repository</name>
             <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
@@ -106,23 +96,10 @@
             </snapshots>
             <layout>default</layout>
         </repository>
+
     </repositories>
     <pluginRepositories>
         <!-- keep this repository the first -->
-        <pluginRepository>
-            <id>jboss-eap-product-repository</id>
-            <name>JBoss EAP Product Repository</name>
-            <url>https://download.devel.redhat.com/brewroot/repos/jb-eap-8.0-maven-build/latest/maven/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-        </pluginRepository>
         <pluginRepository>
             <id>jboss-public-maven-repository</id>
             <name>JBoss Public Maven Repository</name>
@@ -138,17 +115,6 @@
             <id>redhat-ga-maven-repository</id>
             <name>Red Hat GA Maven Repository</name>
             <url>https://maven.repository.redhat.com/ga/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>redhat-ea-maven-repository</id>
-            <name>Red Hat Early Access Maven Repository</name>
-            <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -231,34 +197,50 @@
     </dependencies>
 
     <profiles>
-
         <profile>
-            <id>arq-remote</id>
+            <id>openshift</id>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>${version.failsafe.plugin}</version>
+                        <groupId>org.jboss.eap.plugins</groupId>
+                        <artifactId>eap-maven-plugin</artifactId>
+                        <version>1.0.0.Final-redhat-00014</version>
                         <configuration>
-                            <includes>
-                                <include>**/HelloWorldServletIT</include>
-                            </includes>
-                            <excludes>
-                                <exclude>**/managed/*</exclude>
-                            </excludes>
+                            <channels>
+                                <channel>
+                                    <manifest>
+                                      <groupId>org.jboss.eap.channels</groupId>
+                                      <artifactId>eap-8.0</artifactId>
+                                    </manifest>
+                                </channel>
+                            </channels>
+                            <feature-packs>
+                                <feature-pack>
+                                    <location>org.jboss.eap:wildfly-ee-galleon-pack</location>
+                                </feature-pack>
+                                <feature-pack>
+                                    <location>org.jboss.eap.cloud:eap-cloud-galleon-pack</location>
+                                </feature-pack>
+                                                                <feature-pack>
+                                    <location>org.jboss.eap:eap-datasources-galleon-pack</location>
+                                </feature-pack>
+                            </feature-packs>
+                            <layers>
+                                <layer>cloud-server</layer>
+                            </layers>
+                            <filename>ROOT.war</filename>
                         </configuration>
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>integration-test</goal>
+                                    <goal>package</goal>
                                 </goals>
                             </execution>
                         </executions>
                     </plugin>
                 </plugins>
             </build>
-        </profile>
+        </profile>       
     </profiles>
 
 </project>
